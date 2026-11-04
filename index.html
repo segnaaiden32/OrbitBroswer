@@ -20,56 +20,369 @@
       --site-decoration-opacity: 1;
       color-scheme: light dark;
     }
+
     * { box-sizing: border-box; }
-    body { margin: 0; font-family: var(--site-font-body); background: light-dark(#F7F8FC, #0C1220); color: light-dark(#172033, #EDF1FA); }
-    #app { min-height: 100vh; width: 100%; background-color: var(--site-background); color: var(--site-on-background); overflow: hidden; position: relative; }
-    .topbar { height: 76px; display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(20px, 5vw, 76px); border-bottom: 1px solid light-dark(#E8EBF2, #202A3C); background: light-dark(#FFFFFF, #111A2B); }
-    .brand { display: flex; align-items: center; gap: 11px; color: inherit; text-decoration: none; font-weight: 750; letter-spacing: -0.7px; font-size: 20px; }
-    .brand-mark { width: 34px; height: 34px; border-radius: 12px; background: var(--site-primary); display: grid; place-items: center; color: white; box-shadow: 0 5px 14px #3157D533; }
+
+    body {
+      margin: 0;
+      font-family: var(--site-font-body);
+      background: light-dark(#F7F8FC, #0C1220);
+      color: light-dark(#172033, #EDF1FA);
+    }
+
+    #app {
+      min-height: 100vh;
+      width: 100%;
+      background-color: var(--site-background);
+      color: var(--site-on-background);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .topbar {
+      height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(20px, 5vw, 76px);
+      border-bottom: 1px solid light-dark(#E8EBF2, #202A3C);
+      background: light-dark(#FFFFFF, #111A2B);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      color: inherit;
+      text-decoration: none;
+      font-weight: 750;
+      letter-spacing: -0.7px;
+      font-size: 20px;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      background: var(--site-primary);
+      display: grid;
+      place-items: center;
+      color: white;
+      box-shadow: 0 5px 14px #3157D533;
+    }
+
     .brand-mark svg { width: 21px; height: 21px; }
-    .top-note { font-size: 13px; color: light-dark(#737D91, #9AA6BA); }
-    main { max-width: 900px; margin: 0 auto; padding: clamp(70px, 13vh, 132px) 22px 64px; text-align: center; }
-    .eyebrow { display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; border: 1px solid light-dark(#E1E7FA, #293858); background: light-dark(#F0F3FF, #172443); color: light-dark(#3C56A0, #B8C8FF); border-radius: 999px; font-size: 12px; font-weight: 650; letter-spacing: .2px; }
-    .pulse { width: 7px; height: 7px; background: #32B987; border-radius: 50%; box-shadow: 0 0 0 4px #32B98720; }
-    h1 { font-family: var(--site-font-heading); font-size: clamp(42px, 7vw, 68px); line-height: 1.04; letter-spacing: -3.5px; margin: 25px 0 14px; font-weight: 760; }
+
+    .top-note {
+      font-size: 13px;
+      color: light-dark(#737D91, #9AA6BA);
+    }
+
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: clamp(70px, 13vh, 132px) 22px 64px;
+      text-align: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+      border: 1px solid light-dark(#E1E7FA, #293858);
+      background: light-dark(#F0F3FF, #172443);
+      color: light-dark(#3C56A0, #B8C8FF);
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 650;
+      letter-spacing: .2px;
+    }
+
+    .pulse {
+      width: 7px;
+      height: 7px;
+      background: #32B987;
+      border-radius: 50%;
+      box-shadow: 0 0 0 4px #32B98720;
+    }
+
+    h1 {
+      font-family: var(--site-font-heading);
+      font-size: clamp(42px, 7vw, 68px);
+      line-height: 1.04;
+      letter-spacing: -3.5px;
+      margin: 25px 0 14px;
+      font-weight: 760;
+    }
+
     h1 span { color: var(--site-primary); }
-    .subtitle { margin: 0 auto 36px; max-width: 520px; color: light-dark(#6B7589, #A0ADC1); font-size: 16px; line-height: 1.65; }
-    .search-wrap { max-width: 690px; margin: 0 auto; }
-    .search-box { display: flex; align-items: center; gap: 12px; padding: 8px 9px 8px 20px; background: light-dark(#FFFFFF, #172236); border: 1px solid light-dark(#DDE3EF, #2B3850); border-radius: calc(19px * var(--site-radius-scale)); box-shadow: 0 12px 38px light-dark(#263B7010, #00000030); transition: border .2s, box-shadow .2s; }
-    .search-box:focus-within { border-color: var(--site-primary); box-shadow: 0 0 0 4px #3157D51C, 0 12px 38px #263B7010; }
-    .search-icon { width: 21px; height: 21px; color: light-dark(#8792A6, #9AA8BF); flex: none; }
-    #query { min-width: 0; flex: 1; border: 0; outline: 0; background: transparent; color: inherit; font: inherit; font-size: 16px; padding: 12px 0; }
-    #query::placeholder { color: light-dark(#A0A9B8, #8491A8); }
-    .clear { display: none; border: 0; background: transparent; color: #8994A8; font-size: 21px; cursor: pointer; padding: 4px 7px; }
-    .search-button { border: 0; border-radius: 12px; padding: 13px 20px; background: var(--site-primary); color: var(--site-on-primary); font: inherit; font-size: 14px; font-weight: 650; cursor: pointer; transition: transform .15s, filter .15s; }
-    .search-button:hover { filter: brightness(1.08); transform: translateY(-1px); }
+
+    .subtitle {
+      margin: 0 auto 36px;
+      max-width: 520px;
+      color: light-dark(#6B7589, #A0ADC1);
+      font-size: 16px;
+      line-height: 1.65;
+    }
+
+    .search-wrap {
+      max-width: 690px;
+      margin: 0 auto;
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 9px 8px 20px;
+      background: light-dark(#FFFFFF, #172236);
+      border: 1px solid light-dark(#DDE3EF, #2B3850);
+      border-radius: calc(19px * var(--site-radius-scale));
+      box-shadow: 0 12px 38px light-dark(#263B7010, #00000030);
+      transition: border .2s, box-shadow .2s;
+    }
+
+    .search-box:focus-within {
+      border-color: var(--site-primary);
+      box-shadow: 0 0 0 4px #3157D51C, 0 12px 38px #263B7010;
+    }
+
+    .search-icon {
+      width: 21px;
+      height: 21px;
+      color: light-dark(#8792A6, #9AA8BF);
+      flex: none;
+    }
+
+    #query {
+      min-width: 0;
+      flex: 1;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      font-size: 16px;
+      padding: 12px 0;
+    }
+
+    #query::placeholder {
+      color: light-dark(#A0A9B8, #8491A8);
+    }
+
+    .clear {
+      display: none;
+      border: 0;
+      background: transparent;
+      color: #8994A8;
+      font-size: 21px;
+      cursor: pointer;
+      padding: 4px 7px;
+    }
+
+    .search-button {
+      border: 0;
+      border-radius: 12px;
+      padding: 13px 20px;
+      background: var(--site-primary);
+      color: var(--site-on-primary);
+      font: inherit;
+      font-size: 14px;
+      font-weight: 650;
+      cursor: pointer;
+      transition: transform .15s, filter .15s;
+    }
+
+    .search-button:hover {
+      filter: brightness(1.08);
+      transform: translateY(-1px);
+    }
+
     .search-button:active { transform: translateY(0); }
-    .tabs { display: flex; justify-content: center; gap: 8px; margin: 22px 0 0; flex-wrap: wrap; }
-    .tab { display: inline-flex; align-items: center; gap: 7px; border: 1px solid transparent; border-radius: 999px; padding: 9px 14px; color: light-dark(#778197, #A1AEC3); background: transparent; font: inherit; font-size: 13px; cursor: pointer; }
+
+    .tabs {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin: 22px 0 0;
+      flex-wrap: wrap;
+    }
+
+    .tab {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      padding: 9px 14px;
+      color: light-dark(#778197, #A1AEC3);
+      background: transparent;
+      font: inherit;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
     .tab svg { width: 15px; height: 15px; }
-    .tab.active { background: var(--site-secondary); color: var(--site-on-secondary); border-color: light-dark(#DDE5FF, #34466F); font-weight: 650; }
-    .hint { margin-top: 34px; color: light-dark(#9AA3B3, #77859B); font-size: 12px; }
-    .hint button { color: var(--site-primary); border: 0; background: transparent; font: inherit; cursor: pointer; padding: 0; }
-    .footer { position: absolute; bottom: 0; left: 0; right: 0; display: flex; justify-content: space-between; gap: 15px; padding: 19px clamp(20px, 5vw, 76px); border-top: 1px solid light-dark(#E8EBF2, #202A3C); color: light-dark(#929BAD, #7E8BA2); font-size: 11px; background: light-dark(#FFFFFF, #111A2B); }
-    .footer strong { color: light-dark(#66738A, #A8B5CA); font-weight: 600; }
+
+    .tab.active {
+      background: var(--site-secondary);
+      color: var(--site-on-secondary);
+      border-color: light-dark(#DDE5FF, #34466F);
+      font-weight: 650;
+    }
+
+    .hint {
+      margin-top: 34px;
+      color: light-dark(#9AA3B3, #77859B);
+      font-size: 12px;
+    }
+
+    .hint button {
+      color: var(--site-primary);
+      border: 0;
+      background: transparent;
+      font: inherit;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .footer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      padding: 19px clamp(20px, 5vw, 76px);
+      border-top: 1px solid light-dark(#E8EBF2, #202A3C);
+      color: light-dark(#929BAD, #7E8BA2);
+      font-size: 11px;
+      background: light-dark(#FFFFFF, #111A2B);
+    }
+
+    .footer strong {
+      color: light-dark(#66738A, #A8B5CA);
+      font-weight: 600;
+    }
+
     .footer-right { text-align: right; }
-    .notice { margin: 22px auto 0; max-width: 560px; color: light-dark(#8993A5, #8492A9); font-size: 11px; line-height: 1.5; }
-    .results-page { display: none; max-width: 1040px; margin: 0 auto; padding: 30px clamp(20px, 5vw, 56px) 70px; text-align: left; }
-    .results-search { display: flex; align-items: center; gap: 10px; max-width: 760px; }
+
+    .notice {
+      margin: 22px auto 0;
+      max-width: 560px;
+      color: light-dark(#8993A5, #8492A9);
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    .results-page {
+      display: none;
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 30px clamp(20px, 5vw, 56px) 70px;
+      text-align: left;
+    }
+
+    .results-search {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      max-width: 760px;
+    }
+
     .results-search .search-box { flex: 1; min-width: 0; }
-    .results-meta { color: light-dark(#8791A4, #9AA6BA); font-size: 12px; margin: 22px 0 18px; }
-    .result-layout { display: grid; grid-template-columns: minmax(0, 720px) 220px; gap: 42px; }
-    .result-card { padding: 0 0 23px; margin-bottom: 21px; border-bottom: 1px solid light-dark(#E8EBF2, #202A3C); }
-    .result-url { color: light-dark(#65758F, #9AAAC3); font-size: 12px; margin-bottom: 6px; overflow-wrap: anywhere; }
-    .result-title { display: inline-block; color: light-dark(#244EBB, #91ABFF); font-size: 20px; line-height: 1.3; text-decoration: none; font-weight: 600; margin-bottom: 5px; }
+
+    .results-meta {
+      color: light-dark(#8791A4, #9AA6BA);
+      font-size: 12px;
+      margin: 22px 0 18px;
+    }
+
+    .result-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 720px) 220px;
+      gap: 42px;
+    }
+
+    .result-card {
+      padding: 0 0 23px;
+      margin-bottom: 21px;
+      border-bottom: 1px solid light-dark(#E8EBF2, #202A3C);
+    }
+
+    .result-url {
+      color: light-dark(#65758F, #9AAAC3);
+      font-size: 12px;
+      margin-bottom: 6px;
+      overflow-wrap: anywhere;
+    }
+
+    .result-title {
+      display: inline-block;
+      color: light-dark(#244EBB, #91ABFF);
+      font-size: 20px;
+      line-height: 1.3;
+      text-decoration: none;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
     .result-title:hover { text-decoration: underline; }
-    .result-desc { color: light-dark(#596579, #B0BACB); font-size: 14px; line-height: 1.6; margin: 0; }
-    .result-side { background: light-dark(#F0F3FA, #141F32); border: 1px solid light-dark(#E5E9F2, #26344B); border-radius: 14px; padding: 17px; height: fit-content; }
-    .result-side strong { display: block; font-size: 13px; margin-bottom: 8px; }
-    .result-side p { color: light-dark(#69758A, #A3B0C4); font-size: 12px; line-height: 1.55; margin: 0; }
-    .demo-label { display: inline-flex; border-radius: 999px; padding: 5px 9px; background: light-dark(#FFF4DB, #3B2D13); color: light-dark(#805A12, #F5D58D); font-size: 11px; font-weight: 650; margin-bottom: 10px; }
-    .back-home { border: 0; background: transparent; color: var(--site-primary); font: inherit; cursor: pointer; padding: 8px 0; }
-    .results-page:not([style*="display: none"]) + .footer { position: static; }
+
+    .result-desc {
+      color: light-dark(#596579, #B0BACB);
+      font-size: 14px;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .result-side {
+      background: light-dark(#F0F3FA, #141F32);
+      border: 1px solid light-dark(#E5E9F2, #26344B);
+      border-radius: 14px;
+      padding: 17px;
+      height: fit-content;
+    }
+
+    .result-side strong {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+
+    .result-side p {
+      color: light-dark(#69758A, #A3B0C4);
+      font-size: 12px;
+      line-height: 1.55;
+      margin: 0;
+    }
+
+    .demo-label {
+      display: inline-flex;
+      border-radius: 999px;
+      padding: 5px 9px;
+      background: light-dark(#FFF4DB, #3B2D13);
+      color: light-dark(#805A12, #F5D58D);
+      font-size: 11px;
+      font-weight: 650;
+      margin-bottom: 10px;
+    }
+
+    .back-home {
+      border: 0;
+      background: transparent;
+      color: var(--site-primary);
+      font: inherit;
+      cursor: pointer;
+      padding: 8px 0;
+    }
+
+    .results-page:not([style*="display: none"]) + .footer {
+      position: static;
+    }
+
     @media (max-width: 560px) {
       .topbar { height: 65px; padding: 0 18px; }
       .top-note { font-size: 11px; }
@@ -78,11 +391,19 @@
       .search-box { gap: 8px; padding-left: 14px; }
       .search-button { padding: 12px 14px; }
       .tab { padding: 8px 11px; }
-      .footer { position: static; margin-top: 70px; flex-direction: column; text-align: center; }
+      .footer {
+        position: static;
+        margin-top: 70px;
+        flex-direction: column;
+        text-align: center;
+      }
       .footer-right { text-align: center; }
       .result-layout { grid-template-columns: 1fr; gap: 20px; }
       .result-side { order: -1; }
-      .results-search { align-items: stretch; flex-direction: column; }
+      .results-search {
+        align-items: stretch;
+        flex-direction: column;
+      }
     }
   </style>
 </head>
@@ -90,56 +411,140 @@
   <div id="app">
     <header class="topbar">
       <a class="brand" href="#" aria-label="Orbit Search home">
-        <span class="brand-mark"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="7.2" stroke="white" stroke-width="1.8"/><ellipse cx="12" cy="12" rx="10" ry="4.1" transform="rotate(-32 12 12)" stroke="white" stroke-width="1.5"/><circle cx="17.6" cy="7.5" r="1.5" fill="white"/></svg></span>
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="12" cy="12" r="7.2" stroke="white" stroke-width="1.8"/>
+            <ellipse cx="12" cy="12" rx="10" ry="4.1" transform="rotate(-32 12 12)" stroke="white" stroke-width="1.5"/>
+            <circle cx="17.6" cy="7.5" r="1.5" fill="white"/>
+          </svg>
+        </span>
         <span>orbit<span style="color:var(--site-primary)">.</span></span>
       </a>
       <div class="top-note">A clearer way to explore</div>
     </header>
+
     <main>
-      <div class="eyebrow"><span class="pulse"></span> THE WEB, WITH ROOM TO EXPLORE</div>
+      <div class="eyebrow">
+        <span class="pulse"></span>
+        THE WEB, WITH ROOM TO EXPLORE
+      </div>
+
       <h1>Find your <span>orbit.</span></h1>
-      <p class="subtitle">One search can take you anywhere. Explore websites, images, news, and more across the web.</p>
+
+      <p class="subtitle">
+        One search can take you anywhere. Explore websites, images, news, and more across the web.
+      </p>
+
       <div class="search-wrap">
         <form id="searchForm" class="search-box">
-          <svg class="search-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8" stroke="currentColor" stroke-width="1.8"/><path d="m16 16 4.3 4.3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="10.8" cy="10.8" r="6.8" stroke="currentColor" stroke-width="1.8"/>
+            <path d="m16 16 4.3 4.3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+
           <input id="query" type="search" placeholder="Search anything on the web..." autocomplete="off" aria-label="Search the web">
+
           <button class="clear" id="clearBtn" type="button" aria-label="Clear search">×</button>
-          <button class="search-button" type="submit">Search <span aria-hidden="true">↗</span></button>
+
+          <button class="search-button" type="submit">
+            Search <span aria-hidden="true">↗</span>
+          </button>
         </form>
+
         <nav class="tabs" aria-label="Search category">
-          <button class="tab active" data-type="web" type="button"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/><path d="M3 12h18M12 3c2.4 2.5 3.5 5.5 3.5 9S14.4 18.5 12 21c-2.4-2.5-3.5-5.5-3.5-9S9.6 5.5 12 3Z" stroke="currentColor" stroke-width="1.5"/></svg>Web</button>
-          <button class="tab" data-type="images" type="button"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="16" rx="2.5" stroke="currentColor" stroke-width="1.7"/><circle cx="8.5" cy="9" r="1.5" stroke="currentColor" stroke-width="1.5"/><path d="m4 17 5-5 3.5 3 2.5-2 5 5" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>Images</button>
-          <button class="tab" data-type="news" type="button"><svg viewBox="0 0 24 24" fill="none"><path d="M5 5.5h14v13H5zM8 9h8M8 12h8M8 15h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>News</button>
-          <button class="tab" data-type="videos" type="button"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="3" stroke="currentColor" stroke-width="1.7"/><path d="m10 9 5 3-5 3V9Z" fill="currentColor"/></svg>Videos</button>
+          <button class="tab active" data-type="web" type="button">
+            <svg viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/>
+              <path d="M3 12h18M12 3c2.4 2.5 3.5 5.5 3.5 9S14.4 18.5 12 21c-2.4-2.5-3.5-5.5-3.5-9S9.6 5.5 12 3Z" stroke="currentColor" stroke-width="1.5"/>
+            </svg>
+            Web
+          </button>
+
+          <button class="tab" data-type="images" type="button">
+            <svg viewBox="0 0 24 24" fill="none">
+              <rect x="3" y="4" width="18" height="16" rx="2.5" stroke="currentColor" stroke-width="1.7"/>
+              <circle cx="8.5" cy="9" r="1.5" stroke="currentColor" stroke-width="1.5"/>
+              <path d="m4 17 5-5 3.5 3 2.5-2 5 5" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+            </svg>
+            Images
+          </button>
+
+          <button class="tab" data-type="news" type="button">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M5 5.5h14v13H5zM8 9h8M8 12h8M8 15h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+            News
+          </button>
+
+          <button class="tab" data-type="videos" type="button">
+            <svg viewBox="0 0 24 24" fill="none">
+              <rect x="3" y="5" width="18" height="14" rx="3" stroke="currentColor" stroke-width="1.7"/>
+              <path d="m10 9 5 3-5 3V9Z" fill="currentColor"/>
+            </svg>
+            Videos
+          </button>
         </nav>
       </div>
-      <p class="hint">Try searching for <button type="button" class="example">space exploration</button>, <button type="button" class="example">how computers work</button>, or <button type="button" class="example">today's technology</button>.</p>
+
+      <p class="hint">
+        Try searching for
+        <button type="button" class="example">space exploration</button>,
+        <button type="button" class="example">how computers work</button>,
+        or
+        <button type="button" class="example">today's technology</button>.
+      </p>
+
       <p class="notice">Search the web with Google, right inside Orbit.</p>
     </main>
+
     <section class="results-page" id="resultsPage" aria-live="polite">
       <button class="back-home" id="backHome" type="button">← Orbit home</button>
+
       <div class="results-search">
-        <a class="brand" href="#" aria-label="Orbit Search home"><span class="brand-mark"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="7.2" stroke="white" stroke-width="1.8"/><ellipse cx="12" cy="12" rx="10" ry="4.1" transform="rotate(-32 12 12)" stroke="white" stroke-width="1.5"/><circle cx="17.6" cy="7.5" r="1.5" fill="white"/></svg></span><span>orbit<span style="color:var(--site-primary)">.</span></span></a>
+        <a class="brand" href="#" aria-label="Orbit Search home">
+          <span class="brand-mark">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="12" cy="12" r="7.2" stroke="white" stroke-width="1.8"/>
+              <ellipse cx="12" cy="12" rx="10" ry="4.1" transform="rotate(-32 12 12)" stroke="white" stroke-width="1.5"/>
+              <circle cx="17.6" cy="7.5" r="1.5" fill="white"/>
+            </svg>
+          </span>
+          <span>orbit<span style="color:var(--site-primary)">.</span></span>
+        </a>
+
         <form id="resultsForm" class="search-box">
           <input id="resultsQuery" type="search" placeholder="Search the web..." autocomplete="off" aria-label="Search again">
           <button class="search-button" type="submit">Search ↗</button>
         </form>
       </div>
+
       <nav class="tabs" id="resultsTabs" aria-label="Search category" style="justify-content:flex-start"></nav>
+
       <div class="results-meta" id="resultsMeta"></div>
+
       <div class="result-layout">
-      <div><div class="demo-label">Live Google results</div><div id="orbitGoogleResults"></div></div>
-        <aside class="result-side"><strong>Powered by Google</strong><p>Search results are supplied by your Orbit Search engine. Google may display its own formatting and sponsored results.</p></aside>
+        <div>
+          <div class="demo-label">Live Google results</div>
+          <div id="orbitGoogleResults"></div>
+        </div>
+
+        <aside class="result-side">
+          <strong>Powered by Google</strong>
+          <p>Search results are supplied by your Orbit Search engine. Google may display its own formatting and sponsored results.</p>
+        </aside>
       </div>
     </section>
+
     <footer class="footer">
       <div><strong>orbit.</strong> &nbsp; Explore beyond the ordinary.</div>
       <div class="footer-right">Early build · Independent Orbit interface</div>
     </footer>
   </div>
+
   <script>
     window.orbitPendingQuery = '';
     window.orbitGoogleReady = false;
+
     window.__gcse = {
       parsetags: 'explicit',
       initializationCallback: function () {
@@ -148,14 +553,18 @@
           tag: 'searchresults-only',
           gname: 'orbitResults'
         });
+
         window.orbitGoogleReady = true;
+
         if (window.orbitPendingQuery) {
           google.search.cse.element.getElement('orbitResults').execute(window.orbitPendingQuery);
         }
       }
     };
   </script>
+
   <script async src="https://cse.google.com/cse.js?cx=2636715d83cc44e9e"></script>
+
   <script>
     const form = document.getElementById('searchForm');
     const input = document.getElementById('query');
@@ -164,43 +573,70 @@
     const resultsQuery = document.getElementById('resultsQuery');
     const resultList = document.getElementById('resultList');
     const resultsMeta = document.getElementById('resultsMeta');
+
     let category = 'web';
-    const categoryNames = { web: 'All', images: 'Images', news: 'News', videos: 'Videos' };
+
+    const categoryNames = {
+      web: 'All',
+      images: 'Images',
+      news: 'News',
+      videos: 'Videos'
+    };
 
     function showResults(query) {
       document.querySelector('main').style.display = 'none';
       resultsPage.style.display = 'block';
       resultsQuery.value = query;
+
       resultsMeta.textContent = `Search results for “${query}” · ${categoryNames[category]}`;
-      document.getElementById('resultsTabs').innerHTML = Object.entries(categoryNames).map(([key, label]) => `<button class="tab ${key === category ? 'active' : ''}" data-result-type="${key}" type="button">${label}</button>`).join('');
-      document.querySelectorAll('[data-result-type]').forEach((tab) => tab.addEventListener('click', () => {
-        category = tab.dataset.resultType;
-        showResults(query);
-      }));
+
+      document.getElementById('resultsTabs').innerHTML =
+        Object.entries(categoryNames).map(([key, label]) =>
+          `<button class="tab ${key === category ? 'active' : ''}" data-result-type="${key}" type="button">${label}</button>`
+        ).join('');
+
+      document.querySelectorAll('[data-result-type]').forEach((tab) => {
+        tab.addEventListener('click', () => {
+          category = tab.dataset.resultType;
+          showResults(query);
+        });
+      });
+
       window.orbitPendingQuery = query;
+
       if (window.orbitGoogleReady) {
         const element = google.search.cse.element.getElement('orbitResults');
-        if (element) element.execute(query);
+
+        if (element) {
+          element.execute(query);
+        }
       }
     }
 
     function updateClear() {
       clearBtn.style.display = input.value ? 'block' : 'none';
     }
+
     input.addEventListener('input', updateClear);
+
     clearBtn.addEventListener('click', () => {
       input.value = '';
       updateClear();
       input.focus();
     });
+
     document.querySelectorAll('.tab').forEach((tab) => {
       tab.addEventListener('click', () => {
-        document.querySelectorAll('.tab').forEach((item) => item.classList.remove('active'));
+        document.querySelectorAll('.tab').forEach((item) => {
+          item.classList.remove('active');
+        });
+
         tab.classList.add('active');
         category = tab.dataset.type;
         input.focus();
       });
     });
+
     document.querySelectorAll('.example').forEach((button) => {
       button.addEventListener('click', () => {
         input.value = button.textContent;
@@ -208,20 +644,30 @@
         input.focus();
       });
     });
+
     form.addEventListener('submit', (event) => {
       event.preventDefault();
+
       const query = input.value.trim();
+
       if (!query) {
         input.focus();
         return;
       }
+
       showResults(query);
     });
+
     document.getElementById('resultsForm').addEventListener('submit', (event) => {
       event.preventDefault();
+
       const query = resultsQuery.value.trim();
-      if (query) showResults(query);
+
+      if (query) {
+        showResults(query);
+      }
     });
+
     document.getElementById('backHome').addEventListener('click', () => {
       resultsPage.style.display = 'none';
       document.querySelector('main').style.display = 'block';
