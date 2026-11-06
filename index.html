@@ -1,414 +1,413 @@
-<!DOCTYPE html>
+
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#080B12">
-  <meta name="description" content="Orbit Search — a clearer way to explore the web.">
-  <title>Orbit Search — Explore beyond the ordinary</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080b12">
+  <meta name="description" content="Orbit Search — explore the web.">
+  <title>Orbit Search</title>
   <style>
     :root {
-      --site-primary: #3478F6;
-      --site-on-primary: #FFFFFF;
-      --site-secondary: #172B4D;
-      --site-on-secondary: #DCE9FF;
-      --site-background: #080B12;
-      --site-on-background: #F3F6FC;
-      --site-font-body: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      --site-font-heading: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      --site-heading-scale: 1;
-      --site-spacing-scale: 1;
-      --site-radius-scale: 1;
-      --site-decoration-opacity: 1;
-      --bg: #080B12;
-      --panel: #0E1420;
-      --panel-2: #121B2B;
-      --line: #202C40;
-      --muted: #91A0B7;
-      --blue: #3478F6;
-      --orange: #FF914D;
-      --white: #F3F6FC;
       color-scheme: dark;
+      --bg: #080b12;
+      --surface: #0e1522;
+      --line: rgba(164,190,230,.14);
+      --text: #f4f7fc;
+      --muted: #8e9db4;
+      --blue: #4b8cff;
+      --blue-soft: rgba(75,140,255,.15);
+      --orange: #ff9858;
+      --radius: 18px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
     * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+    html { min-width: 320px; background: var(--bg); scroll-behavior: smooth; }
 
     body {
       margin: 0;
-      min-width: 320px;
+      min-height: 100vh;
+      color: var(--text);
       background: var(--bg);
-      color: var(--white);
-      font-family: var(--site-font-body);
       -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
 
     button, input { font: inherit; }
     button { -webkit-tap-highlight-color: transparent; }
 
-    #app {
-      min-height: 100vh;
-      width: 100%;
-      position: relative;
-      overflow: hidden;
-      isolation: isolate;
-      color: var(--site-on-background);
-      background-color: var(--site-background);
-    }
-
-    .ambient {
-      position: absolute;
-      z-index: -1;
-      pointer-events: none;
-      border-radius: 50%;
-      filter: blur(90px);
-      opacity: calc(.15 * var(--site-decoration-opacity));
-      animation: drift 16s ease-in-out infinite alternate;
-    }
-
-    .ambient-a {
-      width: 420px;
-      height: 420px;
-      top: 70px;
-      left: -210px;
-      background: #1458D8;
-    }
-
-    .ambient-b {
-      width: 360px;
-      height: 360px;
-      top: 260px;
-      right: -210px;
-      background: #D85E27;
-      animation-delay: -7s;
-    }
-
-    .grid-glow {
-      position: absolute;
-      z-index: -1;
+    .backdrop {
+      position: fixed;
       inset: 0;
+      z-index: -2;
       pointer-events: none;
-      opacity: calc(.07 * var(--site-decoration-opacity));
+      overflow: hidden;
+    }
+
+    .backdrop::before, .backdrop::after {
+      content: "";
+      position: absolute;
+      width: 460px;
+      height: 460px;
+      border-radius: 50%;
+      filter: blur(115px);
+      opacity: .16;
+      animation: float 18s ease-in-out infinite alternate;
+    }
+
+    .backdrop::before {
+      background: #1e66e8;
+      top: -250px;
+      left: -210px;
+    }
+
+    .backdrop::after {
+      background: #c95b2b;
+      right: -280px;
+      top: 35%;
+      animation-delay: -8s;
+      opacity: .11;
+    }
+
+    .grid {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      opacity: .12;
       background-image:
-        linear-gradient(#6D8DBA22 1px, transparent 1px),
-        linear-gradient(90deg, #6D8DBA22 1px, transparent 1px);
-      background-size: 54px 54px;
-      mask-image: linear-gradient(to bottom, black, transparent 78%);
+        linear-gradient(rgba(132,164,210,.10) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(132,164,210,.10) 1px, transparent 1px);
+      background-size: 58px 58px;
+      mask-image: linear-gradient(to bottom, #000 0%, transparent 78%);
     }
 
-    @keyframes drift {
-      from { transform: translate3d(0, 0, 0) scale(1); }
-      to { transform: translate3d(30px, -24px, 0) scale(1.08); }
+    @keyframes float {
+      to { transform: translate(32px, 26px) scale(1.08); }
     }
 
-    @keyframes rise {
-      from { opacity: 0; transform: translateY(18px); }
+    @keyframes enter {
+      from { opacity: 0; transform: translateY(14px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    @keyframes orbit-spin {
+    @keyframes spin {
       to { transform: rotate(360deg); }
     }
 
-    @keyframes pulse {
-      50% {
-        box-shadow: 0 0 0 7px #FF914D12, 0 0 20px #FF914D55;
-      }
-    }
-
     .topbar {
-      height: 78px;
-      padding: 0 clamp(20px, 5vw, 76px);
+      height: 76px;
+      padding: 0 clamp(20px, 5vw, 68px);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 1px solid #FFFFFF0D;
-      background: #080B12B8;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+      background: rgba(8,11,18,.66);
       backdrop-filter: blur(18px);
-      position: relative;
-      z-index: 2;
     }
 
     .brand {
       display: inline-flex;
       align-items: center;
-      gap: 12px;
-      color: var(--white);
+      gap: 11px;
+      color: var(--text);
       text-decoration: none;
-      font-weight: 780;
-      letter-spacing: -1px;
-      font-size: 21px;
     }
 
-    .brand-mark {
-      width: 38px;
-      height: 38px;
-      border-radius: 13px;
+    .brand-icon {
+      width: 36px;
+      height: 36px;
       display: grid;
       place-items: center;
-      color: white;
-      background: linear-gradient(145deg, #4388FF, #2055C8);
-      box-shadow: 0 7px 24px #3478F644, inset 0 1px #FFFFFF55;
+      border-radius: 12px;
+      background: linear-gradient(145deg, #4b91ff, #2456bd);
+      box-shadow: 0 7px 24px rgba(50,112,230,.28);
     }
 
-    .brand-mark svg {
-      width: 23px;
-      height: 23px;
+    .brand-icon svg { width: 22px; height: 22px; }
+
+    .brand-name {
+      font-size: 20px;
+      font-weight: 780;
+      letter-spacing: -1px;
     }
 
-    .brand-word span { color: var(--orange); }
+    .brand-name span { color: var(--orange); }
 
-    .top-right {
-      display: flex;
-      align-items: center;
-      gap: 16px;
+    .top-link {
       color: var(--muted);
       font-size: 12px;
+      text-decoration: none;
       letter-spacing: .04em;
+      transition: color .2s ease;
     }
 
-    .status {
+    .top-link:hover { color: var(--text); }
+
+    .home {
+      min-height: calc(100svh - 76px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 70px 22px 100px;
+    }
+
+    .hero {
+      width: min(100%, 780px);
+      text-align: center;
+      animation: enter .65s cubic-bezier(.2,.75,.25,1) both;
+    }
+
+    .eyebrow {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 8px 11px;
-      border: 1px solid #FFFFFF12;
-      background: #FFFFFF06;
-      border-radius: 999px;
+      gap: 9px;
+      margin-bottom: 20px;
+      color: #9aabc4;
+      font-size: 10px;
+      font-weight: 750;
+      letter-spacing: .18em;
+      text-transform: uppercase;
     }
 
-    .status-dot {
-      width: 7px;
-      height: 7px;
-      background: #56D6A0;
+    .eyebrow-mark {
+      width: 6px;
+      height: 6px;
       border-radius: 50%;
-      box-shadow: 0 0 0 4px #56D6A018;
+      background: var(--orange);
+      box-shadow: 0 0 14px rgba(255,152,88,.65);
     }
-
-    main {
-      max-width: 1040px;
-      margin: 0 auto;
-      padding: clamp(130px, 22vh, 220px) 24px 150px;
-      text-align: center;
-    }
-
-    .hero { animation: rise .7s cubic-bezier(.2,.75,.25,1) both; }
 
     h1 {
-      margin: 0 0 34px;
-      font-family: var(--site-font-heading);
-      font-size: calc(clamp(48px, 7vw, 76px) * var(--site-heading-scale));
-      line-height: 1;
+      margin: 0 0 38px;
+      font-size: clamp(52px, 8vw, 82px);
+      line-height: .98;
       letter-spacing: -.075em;
-      font-weight: 760;
+      font-weight: 790;
     }
 
-    h1 .accent { color: var(--orange); }
+    h1 span { color: var(--orange); }
 
-    .search-area {
-      max-width: 780px;
-      margin: 0 auto;
-      animation: rise .8s .12s cubic-bezier(.2,.75,.25,1) both;
-    }
-
-    .search-shell {
+    .search-box {
       display: flex;
       align-items: center;
       gap: 13px;
       padding: 9px 10px 9px 20px;
-      background: linear-gradient(145deg, #141E30, #0E1522);
-      border: 1px solid #3B4D6A;
-      border-radius: calc(20px * var(--site-radius-scale));
-      box-shadow: 0 18px 65px #00000066, inset 0 1px #FFFFFF0D;
-      transition: border-color .25s ease, box-shadow .25s ease, transform .25s ease;
+      background: linear-gradient(145deg, rgba(20,31,49,.96), rgba(12,19,31,.98));
+      border: 1px solid rgba(135,166,216,.34);
+      border-radius: var(--radius);
+      box-shadow: 0 22px 70px rgba(0,0,0,.38), inset 0 1px rgba(255,255,255,.05);
+      transition: border-color .22s, box-shadow .22s, transform .22s;
     }
 
-    .search-shell:focus-within {
-      border-color: #4C8CFF;
-      box-shadow: 0 0 0 4px #3478F626, 0 22px 70px #00000070;
+    .search-box:focus-within {
+      border-color: rgba(85,145,255,.9);
+      box-shadow: 0 0 0 4px var(--blue-soft), 0 25px 75px rgba(0,0,0,.42);
       transform: translateY(-2px);
     }
 
     .search-icon {
-      width: 22px;
-      height: 22px;
-      color: #8296B6;
+      width: 21px;
+      height: 21px;
       flex: none;
+      color: #91a5c4;
     }
 
-    #query, #resultsQuery {
+    .search-input {
       min-width: 0;
       flex: 1;
+      padding: 14px 0;
       border: 0;
       outline: 0;
+      color: var(--text);
       background: transparent;
-      color: var(--white);
-      font-size: 16px;
-      padding: 13px 0;
+      font-size: 15px;
     }
 
-    #query::placeholder, #resultsQuery::placeholder {
-      color: #7586A1;
-    }
+    .search-input::placeholder { color: #7889a4; }
 
-    .clear {
+    .clear-btn {
       display: none;
+      width: 30px;
+      height: 30px;
       border: 0;
+      border-radius: 9px;
+      color: #9aabc3;
       background: transparent;
-      color: #8FA0BA;
       cursor: pointer;
-      font-size: 21px;
-      padding: 5px;
-      transition: color .2s;
+      font-size: 20px;
     }
 
-    .clear:hover { color: var(--orange); }
+    .clear-btn:hover {
+      color: var(--orange);
+      background: rgba(255,255,255,.06);
+    }
 
-    .search-button {
+    .search-btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 9px;
+      padding: 14px 20px;
       border: 0;
-      border-radius: 13px;
-      padding: 14px 21px;
-      color: #10141D;
-      background: linear-gradient(135deg, #FFAD70, #FF8745);
+      border-radius: 12px;
+      color: #17191e;
+      background: linear-gradient(135deg, #ffb27c, #ff8b4d);
       font-size: 13px;
       font-weight: 800;
       cursor: pointer;
-      box-shadow: 0 7px 20px #FF914D2B;
-      transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
+      box-shadow: 0 7px 22px rgba(255,145,77,.18);
+      transition: transform .2s, box-shadow .2s, filter .2s;
     }
 
-    .search-button:hover {
+    .search-btn:hover {
       transform: translateY(-2px);
-      box-shadow: 0 11px 28px #FF914D45;
+      box-shadow: 0 11px 28px rgba(255,145,77,.3);
       filter: saturate(1.08);
     }
 
-    .search-button:active { transform: translateY(0) scale(.98); }
+    .search-btn:active { transform: scale(.98); }
+    .search-btn svg { width: 15px; height: 15px; }
 
-    .search-button svg {
-      width: 15px;
-      height: 15px;
+    .hint {
+      margin-top: 13px;
+      color: #71819a;
+      font-size: 11px;
     }
 
-    .explore-row {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 9px;
-      margin-top: 34px;
-    }
+    .explore { margin-top: 42px; }
 
     .explore-label {
-      margin-right: 5px;
-      color: #71819A;
+      margin-bottom: 14px;
+      color: #73839b;
       font-size: 10px;
       font-weight: 750;
-      letter-spacing: .14em;
+      letter-spacing: .16em;
+    }
+
+    .topics {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 9px;
     }
 
     .topic {
-      border: 1px solid #FFFFFF13;
-      border-radius: 999px;
       padding: 9px 14px;
-      color: #AAB9CF;
-      background: #FFFFFF05;
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 999px;
+      color: #a9b8cd;
+      background: rgba(255,255,255,.035);
       font-size: 12px;
       cursor: pointer;
-      transition: color .22s, border-color .22s, background .22s, transform .22s;
+      transition: color .2s, border-color .2s, background .2s, transform .2s;
     }
 
     .topic:hover {
-      color: #FFFFFF;
-      border-color: #FF914D66;
-      background: #FF914D12;
+      color: #fff;
+      border-color: rgba(255,152,88,.55);
+      background: rgba(255,152,88,.08);
       transform: translateY(-2px);
     }
 
     .footer {
-      padding: 22px clamp(20px, 5vw, 76px);
-      border-top: 1px solid #FFFFFF0D;
-      color: #C9D6EA;
-      background: #080B12A8;
-      font-size: 13px;
-      letter-spacing: -.03em;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      padding: 14px 20px;
+      color: #65748b;
+      font-size: 10px;
+      letter-spacing: .04em;
+      pointer-events: none;
+      background: linear-gradient(transparent, rgba(8,11,18,.72));
     }
 
-    .footer .orange { color: var(--orange); }
+    .footer span {
+      color: var(--orange);
+      margin-left: 3px;
+    }
 
-    .results-page {
+    .results {
       display: none;
-      max-width: 1160px;
+      width: min(100% - 40px, 1040px);
       margin: 0 auto;
-      padding: 30px clamp(20px, 5vw, 56px) 80px;
-      text-align: left;
-      animation: rise .4s ease both;
+      padding: 30px 0 80px;
+      animation: enter .35s ease both;
     }
 
-    .results-top {
+    .results-head {
       display: flex;
       align-items: center;
-      gap: 26px;
+      gap: 24px;
     }
 
-    .results-top .brand { flex: none; }
+    .results-form { flex: 1; min-width: 0; }
+    .results-form .search-box { padding-left: 17px; }
+    .results-form .search-input { padding: 10px 0; font-size: 14px; }
+    .results-form .search-btn { padding: 12px 17px; }
 
-    .results-search {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex: 1;
-      max-width: 760px;
-    }
-
-    .results-search .search-shell {
-      flex: 1;
-      min-width: 0;
-      padding-left: 17px;
-    }
-
-    .results-search .search-button { padding: 13px 17px; }
-
-    .back-home {
+    .back-btn {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 7px;
+      margin: 23px 0 18px;
+      padding: 8px 0;
       border: 0;
-      padding: 11px 0;
-      margin: 13px 0 12px;
+      color: #94a6c0;
       background: transparent;
-      color: #9FB1CB;
       font-size: 12px;
-      font-weight: 650;
       cursor: pointer;
       transition: color .2s, transform .2s;
     }
 
-    .back-home:hover {
+    .back-btn:hover {
       color: var(--orange);
       transform: translateX(-3px);
     }
 
-    .results-meta {
-      margin: 24px 0 16px;
-      color: #8394AE;
+    .result-title {
+      margin: 0 0 18px;
+      color: #8495ae;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .loading {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      margin: 18px 0;
+      color: #9babc1;
       font-size: 12px;
     }
 
-    .result-layout {
-      display: block;
-      max-width: 900px;
+    .spinner {
+      width: 15px;
+      height: 15px;
+      border: 2px solid rgba(130,160,205,.22);
+      border-top-color: var(--orange);
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
     }
 
-    /* Keep Google's injected result area visually integrated with Orbit. */
-    #orbitGoogleResults {
-      min-height: 160px;
-      color: var(--white);
+    .error {
+      display: none;
+      max-width: 700px;
+      margin: 20px 0;
+      padding: 15px 17px;
+      border: 1px solid rgba(255,152,88,.22);
+      border-radius: 13px;
+      color: #d9b69f;
+      background: rgba(255,152,88,.06);
+      font-size: 12px;
+      line-height: 1.6;
     }
+
+    #orbitGoogleResults { min-height: 130px; color: var(--text); }
 
     #orbitGoogleResults .gsc-control-cse,
     #orbitGoogleResults .gsc-control-cse-en {
@@ -421,86 +420,60 @@
     #orbitGoogleResults .gsc-results .gsc-imageResult {
       padding: 17px 0 !important;
       border: 0 !important;
-      border-bottom: 1px solid #FFFFFF12 !important;
+      border-bottom: 1px solid rgba(255,255,255,.09) !important;
       background: transparent !important;
     }
 
     #orbitGoogleResults .gs-title,
-    #orbitGoogleResults .gs-title * {
-      color: #8DB5FF !important;
-    }
+    #orbitGoogleResults .gs-title * { color: #91b8ff !important; }
 
     #orbitGoogleResults .gs-snippet,
-    #orbitGoogleResults .gs-visibleUrl {
-      color: #A5B4C9 !important;
-    }
+    #orbitGoogleResults .gs-visibleUrl { color: #a8b6ca !important; }
 
-    #orbitGoogleResults .gsc-cursor-box { margin-top: 20px !important; }
-    #orbitGoogleResults .gsc-cursor-page { color: #FFAD78 !important; }
+    #orbitGoogleResults .gsc-result-info { color: #8495ae !important; }
+    #orbitGoogleResults .gsc-cursor-page { color: #ffad7b !important; }
 
     #orbitGoogleResults .gsc-results .gsc-cursor-box .gsc-cursor-current-page {
-      color: #FFFFFF !important;
-      background: #3478F6 !important;
+      color: white !important;
+      background: #3478f6 !important;
     }
 
     #orbitGoogleResults .gsc-table-result,
     #orbitGoogleResults .gsc-thumbnail-inside,
-    #orbitGoogleResults .gsc-url-top {
-      background: transparent !important;
-    }
+    #orbitGoogleResults .gsc-url-top { background: transparent !important; }
 
-    #orbitGoogleResults .gsc-result-info { color: #8292AA !important; }
     #orbitGoogleResults .gcsc-more-maybe-branding-root { opacity: .65; }
 
-    @media (max-width: 720px) {
-      .topbar {
-        height: 68px;
-        padding: 0 19px;
+    @media (max-width: 650px) {
+      .topbar { height: 66px; padding: 0 18px; }
+      .home {
+        min-height: calc(100svh - 66px);
+        padding-top: 50px;
+        padding-bottom: 90px;
       }
 
-      .top-right .status { display: none; }
+      h1 { margin-bottom: 30px; }
+      .search-box { gap: 8px; padding: 7px 7px 7px 13px; }
+      .search-input { font-size: 14px; }
+      .search-btn { padding: 12px 13px; font-size: 12px; }
+      .explore { margin-top: 34px; }
 
-      main {
-        padding-top: 24vh;
-        padding-bottom: 100px;
-      }
-
-      h1 { letter-spacing: -.065em; }
-
-      .search-shell {
-        padding-left: 14px;
-        gap: 9px;
-      }
-
-      .search-button { padding: 13px 15px; }
-
-      .results-top {
-        align-items: flex-start;
+      .results-head {
+        align-items: stretch;
         flex-direction: column;
         gap: 16px;
       }
 
-      .results-search { width: 100%; }
-      .results-search .search-shell { width: 100%; }
+      .results-form { width: 100%; }
+      .results { width: min(100% - 32px, 1040px); padding-top: 22px; }
+      .footer { position: static; }
     }
 
-    @media (max-width: 430px) {
-      .brand { font-size: 19px; }
-      h1 { font-size: 48px; }
-
-      .search-shell {
-        gap: 7px;
-        padding: 7px 7px 7px 12px;
-      }
-
-      #query { font-size: 14px; }
-
-      .search-button {
-        padding: 12px 12px;
-        font-size: 12px;
-      }
-
-      .explore-row { gap: 7px; }
+    @media (max-width: 390px) {
+      .brand-name { font-size: 18px; }
+      .search-icon { width: 18px; }
+      .search-input { font-size: 13px; }
+      .search-btn { padding: 11px 10px; }
       .topic { padding: 8px 11px; }
     }
 
@@ -516,232 +489,232 @@
 </head>
 
 <body>
-  <div id="app">
-    <div class="ambient ambient-a" aria-hidden="true"></div>
-    <div class="ambient ambient-b" aria-hidden="true"></div>
-    <div class="grid-glow" aria-hidden="true"></div>
+  <div class="backdrop" aria-hidden="true"></div>
+  <div class="grid" aria-hidden="true"></div>
 
-    <header class="topbar">
-      <a class="brand" href="#" id="homeBrand" aria-label="Orbit Search home">
-        <span class="brand-mark">
-          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <circle cx="12" cy="12" r="6.8" stroke="currentColor" stroke-width="1.7"/>
-            <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(-32 12 12)" stroke="currentColor" stroke-width="1.4"/>
-            <circle cx="17.7" cy="7.4" r="1.5" fill="#FFAD70"/>
-          </svg>
-        </span>
-        <span class="brand-word">orbit<span>.</span></span>
-      </a>
+  <header class="topbar">
+    <a class="brand" href="#" id="homeBrand" aria-label="Orbit Search home">
+      <span class="brand-icon">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="12" cy="12" r="6.6" stroke="white" stroke-width="1.6"/>
+          <ellipse cx="12" cy="12" rx="10" ry="3.9" transform="rotate(-32 12 12)" stroke="white" stroke-width="1.35"/>
+          <circle cx="17.8" cy="7.2" r="1.45" fill="#ffb27c"/>
+        </svg>
+      </span>
+      <span class="brand-name">orbit<span>.</span></span>
+    </a>
+    <a class="top-link" href="#explore" id="exploreLink">EXPLORE</a>
+  </header>
 
-      <div class="top-right">
-        <span class="status">
-          <span class="status-dot"></span>
-          WEB SEARCH
-        </span>
-      </div>
-    </header>
+  <main class="home" id="homePage">
+    <section class="hero">
+      <div class="eyebrow"><span class="eyebrow-mark"></span> A LITTLE MORE DISCOVERY</div>
+      <h1>Explore<span>.</span></h1>
 
-    <main id="homePage">
-      <section class="hero">
-        <h1>Explore<span class="accent">.</span></h1>
-      </section>
-
-      <div class="search-area">
-        <form id="searchForm" class="search-shell">
+      <div class="search-wrap">
+        <form class="search-box" id="searchForm" role="search">
           <svg class="search-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <circle cx="10.8" cy="10.8" r="6.8" stroke="currentColor" stroke-width="1.8"/>
             <path d="m16 16 4.3 4.3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
           </svg>
-
-          <input
-            id="query"
-            type="search"
-            placeholder="What do you want to discover?"
-            autocomplete="off"
-            aria-label="Search the web"
-          >
-
-          <button class="clear" id="clearBtn" type="button" aria-label="Clear search">×</button>
-
-          <button class="search-button" type="submit">
+          <input class="search-input" id="query" type="search" placeholder="Search anything..." autocomplete="off" aria-label="Search the web">
+          <button class="clear-btn" id="clearBtn" type="button" aria-label="Clear search">×</button>
+          <button class="search-btn" type="submit">
             Search
             <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
               <path d="M3 13 13 3M4 3h9v9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </button>
         </form>
+        <div class="hint">Press Enter to search</div>
+      </div>
 
-        <div class="explore-row">
-          <span class="explore-label">EXPLORE</span>
-          <button type="button" class="topic">Technology</button>
-          <button type="button" class="topic">Space</button>
-          <button type="button" class="topic">Design</button>
-          <button type="button" class="topic">Nature</button>
-          <button type="button" class="topic">History</button>
+      <div class="explore" id="explore">
+        <div class="explore-label">A FEW PLACES TO START</div>
+        <div class="topics">
+          <button class="topic" type="button">Technology</button>
+          <button class="topic" type="button">Space</button>
+          <button class="topic" type="button">Architecture</button>
+          <button class="topic" type="button">Nature</button>
+          <button class="topic" type="button">History</button>
         </div>
       </div>
-    </main>
-
-    <section class="results-page" id="resultsPage" aria-live="polite">
-      <div class="results-top">
-        <a class="brand" href="#" id="resultsBrand" aria-label="Orbit Search home">
-          <span class="brand-mark">
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <circle cx="12" cy="12" r="6.8" stroke="currentColor" stroke-width="1.7"/>
-              <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(-32 12 12)" stroke="currentColor" stroke-width="1.4"/>
-              <circle cx="17.7" cy="7.4" r="1.5" fill="#FFAD70"/>
-            </svg>
-          </span>
-          <span class="brand-word">orbit<span>.</span></span>
-        </a>
-
-        <form id="resultsForm" class="results-search">
-          <div class="search-shell">
-            <input
-              id="resultsQuery"
-              type="search"
-              placeholder="Search the web..."
-              autocomplete="off"
-              aria-label="Search again"
-            >
-            <button class="search-button" type="submit">Search ↗</button>
-          </div>
-        </form>
-      </div>
-
-      <button class="back-home" id="backHome" type="button">← Home</button>
-      <div class="results-meta" id="resultsMeta"></div>
-
-      <div class="result-layout">
-        <div id="orbitGoogleResults"></div>
-      </div>
     </section>
+  </main>
 
-    <footer class="footer">
-      <strong>orbit<span class="orange">.</span></strong>
-    </footer>
-  </div>
+  <section class="results" id="resultsPage" aria-live="polite">
+    <div class="results-head">
+      <a class="brand" href="#" id="resultsBrand" aria-label="Orbit Search home">
+        <span class="brand-icon">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="12" cy="12" r="6.6" stroke="white" stroke-width="1.6"/>
+            <ellipse cx="12" cy="12" rx="10" ry="3.9" transform="rotate(-32 12 12)" stroke="white" stroke-width="1.35"/>
+            <circle cx="17.8" cy="7.2" r="1.45" fill="#ffb27c"/>
+          </svg>
+        </span>
+        <span class="brand-name">orbit<span>.</span></span>
+      </a>
+
+      <form class="results-form" id="resultsForm" role="search">
+        <div class="search-box">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="10.8" cy="10.8" r="6.8" stroke="currentColor" stroke-width="1.8"/>
+            <path d="m16 16 4.3 4.3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          <input class="search-input" id="resultsQuery" type="search" placeholder="Search again..." autocomplete="off" aria-label="Search again">
+          <button class="search-btn" type="submit">Search ↗</button>
+        </div>
+      </form>
+    </div>
+
+    <button class="back-btn" id="backHome" type="button">← Back to home</button>
+    <h2 class="result-title" id="resultsTitle"></h2>
+    <div class="loading" id="loading"><span class="spinner"></span> Finding results...</div>
+    <div class="error" id="searchError" role="status"></div>
+    <div id="orbitGoogleResults"></div>
+  </section>
+
+  <footer class="footer">MADE FOR CURIOSITY <span>✦</span></footer>
 
   <script>
-    window.orbitPendingQuery = '';
+    window.orbitPendingQuery = "";
     window.orbitGoogleReady = false;
+    window.orbitGoogleFailed = false;
 
     window.__gcse = {
-      parsetags: 'explicit',
-
+      parsetags: "explicit",
       initializationCallback: function () {
-        google.search.cse.element.render({
-          div: 'orbitGoogleResults',
-          tag: 'searchresults-only',
-          gname: 'orbitResults'
-        });
+        try {
+          google.search.cse.element.render({
+            div: "orbitGoogleResults",
+            tag: "searchresults-only",
+            gname: "orbitResults"
+          });
 
-        window.orbitGoogleReady = true;
+          window.orbitGoogleReady = true;
 
-        if (window.orbitPendingQuery) {
-          google.search.cse.element
-            .getElement('orbitResults')
-            .execute(window.orbitPendingQuery);
+          if (window.orbitPendingQuery) {
+            runGoogleSearch(window.orbitPendingQuery);
+          }
+        } catch (error) {
+          showSearchError("Orbit couldn't start the search results. Please refresh and try again.");
         }
       }
     };
   </script>
 
-  <!-- Google Programmable Search Engine -->
-  <script async src="https://cse.google.com/cse.js?cx=2636715d83cc44e9e"></script>
+  <script async
+    src="https://cse.google.com/cse.js?cx=2636715d83cc44e9e"
+    onerror="window.orbitGoogleFailed=true; showSearchError('Google search could not load. Check your connection and try again.');">
+  </script>
 
   <script>
-    const form = document.getElementById('searchForm');
-    const input = document.getElementById('query');
-    const clearBtn = document.getElementById('clearBtn');
-    const homePage = document.getElementById('homePage');
-    const resultsPage = document.getElementById('resultsPage');
-    const resultsQuery = document.getElementById('resultsQuery');
-    const resultsMeta = document.getElementById('resultsMeta');
+    const homePage = document.getElementById("homePage");
+    const resultsPage = document.getElementById("resultsPage");
+    const queryInput = document.getElementById("query");
+    const resultsInput = document.getElementById("resultsQuery");
+    const clearBtn = document.getElementById("clearBtn");
+    const loading = document.getElementById("loading");
+    const errorBox = document.getElementById("searchError");
+    const resultsTitle = document.getElementById("resultsTitle");
 
-    function updateClear() {
-      clearBtn.style.display = input.value ? 'block' : 'none';
+    function showSearchError(message) {
+      errorBox.textContent = message;
+      errorBox.style.display = "block";
+      loading.style.display = "none";
     }
 
-    function showResults(query) {
-      homePage.style.display = 'none';
-      resultsPage.style.display = 'block';
-
-      resultsQuery.value = query;
-      resultsMeta.textContent = `Results for “${query}”`;
-
-      window.orbitPendingQuery = query;
-
-      if (window.orbitGoogleReady) {
-        const element = google.search.cse.element.getElement('orbitResults');
-
-        if (element) {
-          element.execute(query);
+    function runGoogleSearch(query) {
+      if (!window.orbitGoogleReady) {
+        if (window.orbitGoogleFailed) {
+          showSearchError("Google search couldn't load. Check your connection and try again.");
         }
-      }
-
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    input.addEventListener('input', updateClear);
-
-    clearBtn.addEventListener('click', () => {
-      input.value = '';
-      updateClear();
-      input.focus();
-    });
-
-    document.querySelectorAll('.topic').forEach((button) => {
-      button.addEventListener('click', () => {
-        input.value = button.textContent;
-        updateClear();
-        input.focus();
-      });
-    });
-
-    form.addEventListener('submit', (event) => {
-      event.preventDefault();
-
-      const query = input.value.trim();
-
-      if (!query) {
-        input.focus();
         return;
       }
 
-      showResults(query);
-    });
+      try {
+        const element = google.search.cse.element.getElement("orbitResults");
 
-    document.getElementById('resultsForm').addEventListener('submit', (event) => {
-      event.preventDefault();
+        if (!element) {
+          showSearchError("Search is temporarily unavailable. Please refresh and try again.");
+          return;
+        }
 
-      const query = resultsQuery.value.trim();
-
-      if (query) {
-        showResults(query);
+        element.execute(query);
+        loading.style.display = "none";
+      } catch (error) {
+        showSearchError("Something went wrong while searching. Please try again.");
       }
-    });
-
-    function goHome() {
-      resultsPage.style.display = 'none';
-      homePage.style.display = 'block';
-
-      input.value = resultsQuery.value;
-      updateClear();
-
-      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    document.getElementById('backHome').addEventListener('click', goHome);
+    function search(query) {
+      const clean = query.trim();
+      if (!clean) return;
 
-    document.getElementById('homeBrand').addEventListener('click', (event) => {
-      event.preventDefault();
-      goHome();
+      window.orbitPendingQuery = clean;
+      homePage.style.display = "none";
+      resultsPage.style.display = "block";
+      resultsInput.value = clean;
+      resultsTitle.textContent = "Results for “" + clean + "”";
+      errorBox.style.display = "none";
+      loading.style.display = "flex";
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+
+      if (window.orbitGoogleReady) {
+        runGoogleSearch(clean);
+      } else if (window.orbitGoogleFailed) {
+        showSearchError("Google search couldn't load. Check your connection and try again.");
+      }
+    }
+
+    queryInput.addEventListener("input", () => {
+      clearBtn.style.display = queryInput.value ? "block" : "none";
     });
 
-    document.getElementById('resultsBrand').addEventListener('click', (event) => {
+    clearBtn.addEventListener("click", () => {
+      queryInput.value = "";
+      clearBtn.style.display = "none";
+      queryInput.focus();
+    });
+
+    document.getElementById("searchForm").addEventListener("submit", event => {
       event.preventDefault();
-      goHome();
+      search(queryInput.value);
+    });
+
+    document.getElementById("resultsForm").addEventListener("submit", event => {
+      event.preventDefault();
+      search(resultsInput.value);
+    });
+
+    document.querySelectorAll(".topic").forEach(button => {
+      button.addEventListener("click", () => {
+        queryInput.value = button.textContent.trim();
+        clearBtn.style.display = "block";
+        queryInput.focus();
+      });
+    });
+
+    function goHome(event) {
+      if (event) event.preventDefault();
+
+      resultsPage.style.display = "none";
+      homePage.style.display = "flex";
+      queryInput.value = resultsInput.value;
+      clearBtn.style.display = queryInput.value ? "block" : "none";
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    document.getElementById("backHome").addEventListener("click", goHome);
+    document.getElementById("homeBrand").addEventListener("click", goHome);
+    document.getElementById("resultsBrand").addEventListener("click", goHome);
+
+    document.getElementById("exploreLink").addEventListener("click", event => {
+      if (homePage.style.display === "none") {
+        goHome(event);
+      }
     });
   </script>
 </body>
